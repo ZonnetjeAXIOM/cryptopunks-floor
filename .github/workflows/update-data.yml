@@ -1,0 +1,38 @@
+name: Update data
+
+on:
+  schedule:
+    - cron: '30 0 * * *'   # 00:30 UTC, after punkprice.com's 23:40 nightly sync
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download latest CSVs
+        run: |
+          set -euo pipefail
+          fetch() {  # url, target, expected header
+            curl -fsSL --retry 3 --retry-delay 20 "$1" -o "$2.new"
+            if [ "$(head -1 "$2.new")" != "$3" ]; then echo "::error::unexpected header in $1"; exit 1; fi
+            # Never shrink: a short file means an upstream problem, not less history.
+            if [ "$(wc -l < "$2.new")" -lt "$(wc -l < "$2")" ]; then echo "::error::$1 has fewer rows than the committed file"; exit 1; fi
+            mv "$2.new" "$2"
+          }
+          fetch https://punkprice.com/api/data/floor-history.csv data/cryptopunks-daily-floor.csv \
+            'date,floor_eth,floor_punk_index,active_asks,source'
+          fetch https://punkprice.com/api/data/premium-history.csv data/pnkstr-daily-premium.csv \
+            'date,premium_x,pnkstr_market_cap_usd,asset_fmv_usd,punks_held,unallocated_eth,cryptopunks_floor_eth,eth_price_usd,pnkstr_price_usd,pnkstr_circulating_supply,pnkstr_volume_usd'
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet; then echo "No change"; exit 0; fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "data: $(tail -1 data/cryptopunks-daily-floor.csv | cut -d, -f1)"
+          git push

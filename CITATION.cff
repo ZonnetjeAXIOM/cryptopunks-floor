@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this dataset, please cite it as below."
+type: dataset
+title: "CryptoPunks daily floor price, reconstructed from the CryptoPunks marketplace contract"
+authors:
+  - name: "PunkPrice"
+    website: "https://punkprice.com"
+date-released: "2026-09-21"
+url: "https://punkprice.com/data"
+repository-code: "https://github.com/ZonnetjeAXIOM/cryptopunks-floor"
+license: CC-BY-4.0
+keywords:
+  - CryptoPunks
+  - NFT
+  - floor price
+  - Ethereum
+  - on-chain data
+abstract: >-
+  Daily CryptoPunks floor price since 23 June 2017: the lowest public ask on the
+  CryptoPunks marketplace contract at the end of each UTC day, rebuilt from the
+  contract's own events. Updated daily.

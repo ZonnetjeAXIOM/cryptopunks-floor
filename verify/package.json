@@ -1,0 +1,8 @@
+{
+  "name": "cryptopunks-floor-verify",
+  "private": true,
+  "type": "module",
+  "description": "Check the published daily floor against CryptoPunks contract state at the end of any day.",
+  "scripts": { "verify": "node verify-floor.mjs" },
+  "dependencies": { "viem": "^2.21.0" }
+}

@@ -1,0 +1,48 @@
+{
+  "name": "cryptopunks-daily-floor",
+  "title": "CryptoPunks daily floor price, 2017 to today",
+  "description": "Lowest public ask on the CryptoPunks marketplace contract at the end of each UTC day, rebuilt from the contract's own events, plus the PunkStrategy (PNKSTR) premium to its treasury.",
+  "homepage": "https://punkprice.com/data",
+  "licenses": [{ "name": "CC-BY-4.0", "path": "https://creativecommons.org/licenses/by/4.0/", "title": "Creative Commons Attribution 4.0" }],
+  "sources": [{ "title": "CryptoPunks marketplace contract 0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb", "path": "https://etherscan.io/address/0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb" }],
+  "resources": [
+    {
+      "name": "cryptopunks-daily-floor",
+      "path": "data/cryptopunks-daily-floor.csv",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "schema": {
+        "primaryKey": "date",
+        "fields": [
+          { "name": "date", "type": "date", "description": "UTC calendar day" },
+          { "name": "floor_eth", "type": "number", "description": "Lowest public ask at 23:59:59 UTC, in ETH" },
+          { "name": "floor_punk_index", "type": "integer", "description": "Punk offered at the floor price (one of them on ties)" },
+          { "name": "active_asks", "type": "integer", "description": "All open offers on the contract, public and private" },
+          { "name": "source", "type": "string", "constraints": { "enum": ["onchain-orderbook", "onchain-carried"] }, "description": "Whether the contract saw marketplace activity that day" }
+        ]
+      }
+    },
+    {
+      "name": "pnkstr-daily-premium",
+      "path": "data/pnkstr-daily-premium.csv",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "schema": {
+        "primaryKey": "date",
+        "fields": [
+          { "name": "date", "type": "date" },
+          { "name": "premium_x", "type": "number", "description": "Market cap / treasury value" },
+          { "name": "pnkstr_market_cap_usd", "type": "number" },
+          { "name": "asset_fmv_usd", "type": "number", "description": "Punks held x floor x ETH/USD + unallocated ETH x ETH/USD" },
+          { "name": "punks_held", "type": "integer" },
+          { "name": "unallocated_eth", "type": "number" },
+          { "name": "cryptopunks_floor_eth", "type": "number" },
+          { "name": "eth_price_usd", "type": "number" },
+          { "name": "pnkstr_price_usd", "type": "number" },
+          { "name": "pnkstr_circulating_supply", "type": "number" },
+          { "name": "pnkstr_volume_usd", "type": "number" }
+        ]
+      }
+    }
+  ]
+}
