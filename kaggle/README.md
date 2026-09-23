@@ -1,18 +1,24 @@
-# Publishing to Kaggle
+# Kaggle
 
-Kaggle needs your own account, so this is a one-time manual step (about 5 minutes).
+**Live: https://www.kaggle.com/datasets/samrenkema/cryptopunks-daily-floor-price**
+(created 2026-09-23 via the API, owner `samrenkema`).
 
-1. Kaggle → Settings → **API → Create New Token**. Save the downloaded `kaggle.json` to
-   `C:\Users\<you>\.kaggle\kaggle.json`.
-2. `pip install kaggle`
-3. In `dataset-metadata.json`, replace `KAGGLE_USERNAME` with your Kaggle username.
-4. From the repo root:
-   ```sh
-   cp data/*.csv kaggle/
-   kaggle datasets create -p kaggle
-   ```
-5. On the dataset page, upload `docs/floor-history.png` as the cover image.
+**Still to do once, by hand:** the API creates datasets private and offers no visibility
+switch. On the dataset page: **Settings → Visibility → Public**, and add
+`docs/floor-history.png` as the cover image.
 
-Later updates: `cp data/*.csv kaggle/ && kaggle datasets version -p kaggle -m "Update"`.
-To automate that, add `KAGGLE_USERNAME` and `KAGGLE_KEY` as repo secrets and a step to the
-update workflow.
+## Publishing a new version
+
+```sh
+cp data/*.csv kaggle/upload/
+KAGGLE_API_TOKEN=<token> py -m kaggle datasets version -p kaggle/upload -m "Daily update"
+```
+
+Notes for whoever automates this:
+- The current CLI authenticates with `KAGGLE_API_TOKEN` (the newer access token), not the
+  old `KAGGLE_USERNAME` + `KAGGLE_KEY` pair.
+- `dataset-metadata.json` must be UTF-8 **without** a BOM, or the CLI fails with
+  "Expecting value: line 1 column 1".
+- The `id` owner must be the Kaggle username (`samrenkema`), not a display name.
+- Only the files in `kaggle/upload/` are uploaded, so this README never lands in the dataset.
+- `cryptocurrency` is not a valid Kaggle tag; the accepted ones are in the metadata file.
