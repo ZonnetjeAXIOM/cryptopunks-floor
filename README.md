@@ -38,6 +38,8 @@ The same data is served live, with no API key, at
 |---|---|
 | `date` | UTC calendar day, `YYYY-MM-DD` |
 | `floor_eth` | Lowest public ask standing at 23:59:59 UTC, in ETH |
+| `floor_usd` | `floor_eth` × that day's ETH price, rounded to cents |
+| `eth_usd` | ETH price in USD at 23:59:59 UTC ([DefiLlama](https://defillama.com/docs/api)); empty if unknown |
 | `floor_punk_index` | The punk offered at that price (on ties, one of them) |
 | `active_asks` | All open offers on the contract at that moment, public and private |
 | `source` | `onchain-orderbook` if the contract saw marketplace activity that day, `onchain-carried` if the previous day's order book stood unchanged |
@@ -61,7 +63,9 @@ That marketplace is where the floor is set.
 3. The floor for a day is the **lowest public ask open at the end of that UTC day**. Offers
    reserved for one buyer (`toAddress` set) are excluded, because nobody else can take them.
 
-Nothing is estimated, interpolated or taken from an aggregator.
+Nothing is estimated, interpolated or taken from an aggregator. The one exception is the
+ETH price used for the USD columns, which is a market price from DefiLlama rather than
+something read from the contract; `floor_eth` is the measured quantity.
 
 **Limits.** This is the floor on the CryptoPunks contract's own marketplace. Wrapped punks
 listed on other marketplaces are not included. A floor is an ask, not a trade.
@@ -74,9 +78,10 @@ listed on other marketplaces are not included. A floor is an ask, not a trade.
   ```sh
   cd verify && npm install && node verify-floor.mjs 2024-01-11 2022-12-01
   ```
-- **In SQL.** [`dune/cryptopunks-daily-floor.sql`](dune/cryptopunks-daily-floor.sql)
-  derives the series independently from raw logs. Its logic reproduces all 3,378 days
-  exactly.
+- **In SQL, on Dune.** [`dune/cryptopunks-daily-floor.sql`](dune/cryptopunks-daily-floor.sql)
+  derives the series independently from raw `ethereum.logs`. Run as
+  [dune.com/queries/8816434](https://dune.com/queries/8816434) it returned all 3,380 days
+  with **zero differences** against this dataset.
 - **Against cryptopunks.app.** The official site also charts a daily floor. The two series
   agree exactly on about three days in four. On 24 of 24 disputed days we checked, the
   contract's own state matched this dataset. Most of the difference is a flat 59 ETH that

@@ -1,6 +1,19 @@
 # Publishing on Dune
 
-Dune needs your own account; the query itself is ready.
+**Live query: https://dune.com/queries/8816434** (created 2026-09-23 via the API; it ran on
+Dune and returned all 3,380 days, matching punkprice.com exactly with zero differences).
+
+What is left is the chart and the dashboard, which the Dune API cannot create:
+
+1. Open the query, **Add visualization → Line chart**: x = `day`, y = `floor_eth`, y-axis
+   **logarithmic**.
+2. **New → Dashboard** "CryptoPunks floor, every day since 2017", add the chart and the text
+   widget below.
+3. Optionally set the query to refresh daily (Query → Schedule).
+
+---
+
+## Reference: creating it from scratch
 
 1. dune.com → **New → Query** → paste [`cryptopunks-daily-floor.sql`](cryptopunks-daily-floor.sql) → Run.
    It reads raw `ethereum.logs`, so it doesn't depend on any decoded table. Expect a

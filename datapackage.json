@@ -16,6 +16,8 @@
         "fields": [
           { "name": "date", "type": "date", "description": "UTC calendar day" },
           { "name": "floor_eth", "type": "number", "description": "Lowest public ask at 23:59:59 UTC, in ETH" },
+          { "name": "floor_usd", "type": "number", "description": "floor_eth x eth_usd, rounded to cents" },
+          { "name": "eth_usd", "type": "number", "description": "ETH price in USD at 23:59:59 UTC (DefiLlama)" },
           { "name": "floor_punk_index", "type": "integer", "description": "Punk offered at the floor price (one of them on ties)" },
           { "name": "active_asks", "type": "integer", "description": "All open offers on the contract, public and private" },
           { "name": "source", "type": "string", "constraints": { "enum": ["onchain-orderbook", "onchain-carried"] }, "description": "Whether the contract saw marketplace activity that day" }

@@ -25,7 +25,7 @@ jobs:
             mv "$2.new" "$2"
           }
           fetch https://punkprice.com/api/data/floor-history.csv data/cryptopunks-daily-floor.csv \
-            'date,floor_eth,floor_punk_index,active_asks,source'
+            'date,floor_eth,floor_usd,eth_usd,floor_punk_index,active_asks,source'
           fetch https://punkprice.com/api/data/premium-history.csv data/pnkstr-daily-premium.csv \
             'date,premium_x,pnkstr_market_cap_usd,asset_fmv_usd,punks_held,unallocated_eth,cryptopunks_floor_eth,eth_price_usd,pnkstr_price_usd,pnkstr_circulating_supply,pnkstr_volume_usd'
 
