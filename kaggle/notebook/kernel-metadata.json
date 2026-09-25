@@ -4,7 +4,7 @@
   "code_file": "cryptopunks-floor-quick-start.ipynb",
   "language": "python",
   "kernel_type": "notebook",
-  "is_private": false,
+  "is_private": true,
   "enable_gpu": false,
   "enable_internet": false,
   "dataset_sources": [
@@ -13,7 +13,6 @@
   "competition_sources": [],
   "kernel_sources": [],
   "keywords": [
-    "finance",
-    "time series analysis"
+    "finance"
   ]
 }
