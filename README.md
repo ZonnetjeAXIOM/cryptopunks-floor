@@ -80,7 +80,7 @@ listed on other marketplaces are not included. A floor is an ask, not a trade.
   ```
 - **In SQL, on Dune.** [`dune/cryptopunks-daily-floor.sql`](dune/cryptopunks-daily-floor.sql)
   derives the series independently from raw `ethereum.logs`. Run as
-  [dune.com/queries/8816434](https://dune.com/queries/8816434) it returned all 3,380 days
+  [dune.com/queries/8816434](https://dune.com/queries/8816434) ([dashboard](https://dune.com/zonnetje/cryptopunks-floor-every-day-since-2017)) it returned all 3,380 days
   with **zero differences** against this dataset.
 - **Against cryptopunks.app.** The official site also charts a daily floor. The two series
   agree exactly on about three days in four. On 24 of 24 disputed days we checked, the

@@ -3,7 +3,9 @@
 **Live query: https://dune.com/queries/8816434** (created 2026-09-23 via the API; it ran on
 Dune and returned all 3,380 days, matching punkprice.com exactly with zero differences).
 
-What is left is the chart and the dashboard, which the Dune API cannot create:
+**Dashboard: https://dune.com/zonnetje/cryptopunks-floor-every-day-since-2017** (built by hand 2026-09-25; the Dune API has no dashboard or chart endpoints).
+
+How it was built, for reference:
 
 1. Open the query, **Add visualization → Line chart**: x = `day`, y = `floor_eth`, y-axis
    **logarithmic**.
