@@ -1,20 +1,37 @@
 # Kaggle
 
-**Live: https://www.kaggle.com/datasets/samrenkema/cryptopunks-daily-floor-price**
-(created 2026-09-23 via the API, owner `samrenkema`).
+**Live and public: https://www.kaggle.com/datasets/samrenkema/cryptopunks-daily-floor-price**
+(created 2026-09-23 via the API, owner `samrenkema`; public, with cover image, since 2026-09-25).
 
-**Still to do once, by hand:** the API creates datasets private and offers no visibility
-switch. On the dataset page: **Settings → Visibility → Public**, and add
-`docs/floor-history.png` as the cover image.
+## Daily versions
 
-## Publishing a new version
+`.github/workflows/update-data.yml` publishes a new Kaggle version after every data commit
+(and on every manual run), using the repo secret `KAGGLE_API_TOKEN`. By hand:
 
 ```sh
 cp data/*.csv kaggle/upload/
 KAGGLE_API_TOKEN=<token> py -m kaggle datasets version -p kaggle/upload -m "Daily update"
 ```
 
-Notes for whoever automates this:
+## Changing the metadata (title, descriptions, columns, provenance, frequency)
+
+Edit `kaggle/dataset-metadata.json`, copy it to `kaggle/upload/`, then:
+
+```sh
+KAGGLE_API_TOKEN=<token> py -m kaggle datasets metadata samrenkema/cryptopunks-daily-floor-price --update -p kaggle
+```
+
+- The metadata update sends `isPrivate` as false when it is missing, so it can make the
+  dataset public. It is public now, so that is harmless.
+- It uploads a `dataset-cover-image.{png,jpg,webp}` next to the metadata file and crops it
+  to a fixed 560x280 from the top-left. **Keep no such file in `kaggle/`**, or it replaces
+  the cover set by hand on the site.
+- The metadata update only accepts the licence's display name,
+  `Attribution 4.0 International (CC BY 4.0)`. `datasets create`/`version` accepted `CC-BY-4.0`.
+- `userSpecifiedSources` is the "Provenance" field; `expectedUpdateFrequency` takes `daily`.
+
+## CLI notes
+
 - The current CLI authenticates with `KAGGLE_API_TOKEN` (the newer access token), not the
   old `KAGGLE_USERNAME` + `KAGGLE_KEY` pair.
 - `dataset-metadata.json` must be UTF-8 **without** a BOM, or the CLI fails with

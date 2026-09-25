@@ -30,9 +30,23 @@ jobs:
             'date,premium_x,pnkstr_market_cap_usd,asset_fmv_usd,punks_held,unallocated_eth,cryptopunks_floor_eth,eth_price_usd,pnkstr_price_usd,pnkstr_circulating_supply,pnkstr_volume_usd'
 
       - name: Commit if changed
+        id: commit
         run: |
-          if git diff --quiet; then echo "No change"; exit 0; fi
+          if git diff --quiet; then echo "No change"; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -am "data: $(tail -1 data/cryptopunks-daily-floor.csv | cut -d, -f1)"
           git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      # Kaggle is listed as updating daily, so every data commit becomes a new version there.
+      # Only kaggle/upload/ is uploaded; its metadata carries the file and column descriptions.
+      - name: Publish Kaggle version
+        if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        env:
+          KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          pip install --quiet kaggle
+          cp data/*.csv kaggle/upload/
+          kaggle datasets version -p kaggle/upload -m "Daily update $(tail -1 data/cryptopunks-daily-floor.csv | cut -d, -f1)"

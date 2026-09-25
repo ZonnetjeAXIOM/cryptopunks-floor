@@ -1,0 +1,19 @@
+{
+  "id": "samrenkema/cryptopunks-floor-quick-start",
+  "title": "CryptoPunks floor quick start",
+  "code_file": "cryptopunks-floor-quick-start.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": false,
+  "enable_gpu": false,
+  "enable_internet": false,
+  "dataset_sources": [
+    "samrenkema/cryptopunks-daily-floor-price"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "keywords": [
+    "finance",
+    "time series analysis"
+  ]
+}

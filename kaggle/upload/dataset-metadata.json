@@ -1,57 +1,129 @@
 {
-  "title": "CryptoPunks Daily Floor Price 2017-2026",
-  "id": "samrenkema/cryptopunks-daily-floor-price",
-  "subtitle": "Lowest public ask on the CryptoPunks contract, every day since June 2017",
-  "description": "# CryptoPunks daily floor price, 2017 to today\n\nThe daily CryptoPunks floor from 23 June 2017 onwards, rebuilt from the CryptoPunks marketplace contract's own events. One row per UTC day, no gaps.\n\n**Method.** Every PunkOffered, PunkNoLongerForSale, PunkBought and PunkTransfer event since the contract's genesis block (about 240,000 events) is replayed in block and log order. An offer stays open until the next event for the same punk. The floor for a day is the lowest *public* ask open at 23:59:59 UTC. Offers reserved for one buyer are excluded. Nothing is estimated or taken from an aggregator.\n\n**Verified.** Checked against the contract's own state (punksOfferedForSale for all 10,000 punks at the last block of the day) on every disputed day sampled.\n\n**Also included:** the PunkStrategy (PNKSTR) premium to its treasury, daily since September 2025.\n\nChart, live CSV/JSON API and full methodology: https://punkprice.com/data\nSource, SQL version and verification script: https://github.com/ZonnetjeAXIOM/cryptopunks-floor\n\n**Cite as:** PunkPrice (2026). CryptoPunks daily floor price, reconstructed from the CryptoPunks marketplace contract. https://punkprice.com/data",
-  "isPrivate": false,
-  "licenses": [
-    {
-      "name": "CC-BY-4.0"
-    }
-  ],
-  "keywords": [
-    "finance",
-    "art",
-    "time series analysis",
-    "investing"
-  ],
-  "resources": [
-    {
-      "path": "cryptopunks-daily-floor.csv",
-      "description": "One row per UTC day since 2017-06-23: floor in ETH, the punk at the floor, open offers, and whether the order book changed that day.",
-      "schema": {
-        "fields": [
-          {
-            "name": "date",
-            "type": "datetime",
-            "description": "UTC calendar day"
-          },
-          {
-            "name": "floor_eth",
-            "type": "number",
-            "description": "Lowest public ask at 23:59:59 UTC, in ETH"
-          },
-          {
-            "name": "floor_punk_index",
-            "type": "integer",
-            "description": "Punk offered at the floor price"
-          },
-          {
-            "name": "active_asks",
-            "type": "integer",
-            "description": "All open offers, public and private"
-          },
-          {
-            "name": "source",
-            "type": "string",
-            "description": "onchain-orderbook (activity that day) or onchain-carried (unchanged)"
-          }
-        ]
-      }
-    },
-    {
-      "path": "pnkstr-daily-premium.csv",
-      "description": "PunkStrategy (PNKSTR) market cap against its treasury (punks held x floor + unallocated ETH), daily since September 2025."
-    }
-  ]
+    "title":  "CryptoPunks Daily Floor Price 2017-2026",
+    "id":  "samrenkema/cryptopunks-daily-floor-price",
+    "subtitle":  "CryptoPunks floor since 2017 and PNKSTR premium, rebuilt from on-chain data",
+    "description":  "# CryptoPunks daily floor price, 2017 to today\n\nThe daily CryptoPunks floor from 23 June 2017 onwards, rebuilt from the CryptoPunks marketplace contract\u0027s own events. One row per UTC day, no gaps.\n\n**Method.** Every PunkOffered, PunkNoLongerForSale, PunkBought and PunkTransfer event since the contract\u0027s genesis block (about 240,000 events) is replayed in block and log order. An offer stays open until the next event for the same punk. The floor for a day is the lowest *public* ask open at 23:59:59 UTC. Offers reserved for one buyer are excluded. Nothing is estimated or taken from an aggregator.\n\n**Verified.** Checked against the contract\u0027s own state (punksOfferedForSale for all 10,000 punks at the last block of the day) on every disputed day sampled.\n\n**Also included:** the PunkStrategy (PNKSTR) premium to its treasury, daily since September 2025.\n\nChart, live CSV/JSON API and full methodology: https://punkprice.com/data\nSource, SQL version and verification script: https://github.com/ZonnetjeAXIOM/cryptopunks-floor\n\n**Cite as:** PunkPrice (2026). CryptoPunks daily floor price, reconstructed from the CryptoPunks marketplace contract. https://punkprice.com/data",
+    "isPrivate":  false,
+    "licenses":  [
+                     {
+                         "name":  "CC-BY-4.0"
+                     }
+                 ],
+    "keywords":  [
+                     "finance",
+                     "art",
+                     "time series analysis",
+                     "investing",
+                     "economics"
+                 ],
+    "resources":  [
+                      {
+                          "path":  "cryptopunks-daily-floor.csv",
+                          "description":  "CryptoPunks floor, one row per UTC day since 2017-06-23 with no gaps: the lowest public ask on the marketplace contract at 23:59:59 UTC, in ETH and USD, with the punk at the floor and the size of the order book.",
+                          "schema":  {
+                                         "fields":  [
+                                                        {
+                                                            "name":  "date",
+                                                            "type":  "datetime",
+                                                            "description":  "UTC calendar day, YYYY-MM-DD"
+                                                        },
+                                                        {
+                                                            "name":  "floor_eth",
+                                                            "type":  "number",
+                                                            "description":  "Lowest public ask open at 23:59:59 UTC, in ETH. Offers reserved for one buyer are excluded"
+                                                        },
+                                                        {
+                                                            "name":  "floor_usd",
+                                                            "type":  "number",
+                                                            "description":  "floor_eth x eth_usd, rounded to cents. Empty when that day\u0027s ETH price is unknown"
+                                                        },
+                                                        {
+                                                            "name":  "eth_usd",
+                                                            "type":  "number",
+                                                            "description":  "ETH price in USD at the end of that UTC day (DefiLlama). Empty when unknown"
+                                                        },
+                                                        {
+                                                            "name":  "floor_punk_index",
+                                                            "type":  "integer",
+                                                            "description":  "Index (0-9999) of the punk offered at the floor price"
+                                                        },
+                                                        {
+                                                            "name":  "active_asks",
+                                                            "type":  "integer",
+                                                            "description":  "All offers open on the contract at that moment, public and private"
+                                                        },
+                                                        {
+                                                            "name":  "source",
+                                                            "type":  "string",
+                                                            "description":  "onchain-orderbook when the contract saw marketplace activity that day, onchain-carried when the previous day\u0027s order book stood unchanged"
+                                                        }
+                                                    ]
+                                     }
+                      },
+                      {
+                          "path":  "pnkstr-daily-premium.csv",
+                          "description":  "PunkStrategy (PNKSTR) premium, one row per UTC day since 2025-09-15: the token\u0027s market cap divided by the fair market value of its treasury (punks held x CryptoPunks floor, plus unallocated ETH).",
+                          "schema":  {
+                                         "fields":  [
+                                                        {
+                                                            "name":  "date",
+                                                            "type":  "datetime",
+                                                            "description":  "UTC calendar day, YYYY-MM-DD"
+                                                        },
+                                                        {
+                                                            "name":  "premium_x",
+                                                            "type":  "number",
+                                                            "description":  "pnkstr_market_cap_usd / asset_fmv_usd. 1.0 means the token trades at exactly its treasury value"
+                                                        },
+                                                        {
+                                                            "name":  "pnkstr_market_cap_usd",
+                                                            "type":  "number",
+                                                            "description":  "PNKSTR market capitalisation in USD (CoinGecko)"
+                                                        },
+                                                        {
+                                                            "name":  "asset_fmv_usd",
+                                                            "type":  "number",
+                                                            "description":  "Treasury fair market value in USD: (punks_held x cryptopunks_floor_eth + unallocated_eth) x eth_price_usd"
+                                                        },
+                                                        {
+                                                            "name":  "punks_held",
+                                                            "type":  "integer",
+                                                            "description":  "CryptoPunks held by the PunkStrategy treasury that day"
+                                                        },
+                                                        {
+                                                            "name":  "unallocated_eth",
+                                                            "type":  "number",
+                                                            "description":  "ETH held by the treasury and not yet spent on punks"
+                                                        },
+                                                        {
+                                                            "name":  "cryptopunks_floor_eth",
+                                                            "type":  "number",
+                                                            "description":  "CryptoPunks floor used for the valuation, in ETH (same series as cryptopunks-daily-floor.csv)"
+                                                        },
+                                                        {
+                                                            "name":  "eth_price_usd",
+                                                            "type":  "number",
+                                                            "description":  "ETH price in USD that day (DefiLlama)"
+                                                        },
+                                                        {
+                                                            "name":  "pnkstr_price_usd",
+                                                            "type":  "number",
+                                                            "description":  "PNKSTR token price in USD (CoinGecko)"
+                                                        },
+                                                        {
+                                                            "name":  "pnkstr_circulating_supply",
+                                                            "type":  "number",
+                                                            "description":  "Implied circulating supply: market cap / price"
+                                                        },
+                                                        {
+                                                            "name":  "pnkstr_volume_usd",
+                                                            "type":  "number",
+                                                            "description":  "PNKSTR 24h trading volume in USD (CoinGecko)"
+                                                        }
+                                                    ]
+                                     }
+                      }
+                  ],
+    "expectedUpdateFrequency":  "daily",
+    "userSpecifiedSources":  "Floor: replayed from the CryptoPunks marketplace contract (0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb), every PunkOffered, PunkNoLongerForSale, PunkBought and PunkTransfer event since genesis, fetched via Etherscan and checked against contract state (punksOfferedForSale). ETH/USD: DefiLlama daily close. PNKSTR price, market cap and volume: CoinGecko. PunkStrategy treasury (punks held, unallocated ETH): read from the treasury\u0027s on-chain holdings and balance. Collected and published daily by PunkPrice (https://punkprice.com/about); source and verification script at https://github.com/ZonnetjeAXIOM/cryptopunks-floor."
 }
