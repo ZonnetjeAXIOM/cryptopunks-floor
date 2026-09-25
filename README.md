@@ -14,7 +14,7 @@ marketplace contract's own events. One row per UTC day, no gaps, updated every d
 import pandas as pd
 
 floor = pd.read_csv(
-    "https://raw.githubusercontent.com/ZonnetjeAXIOM/cryptopunks-floor/main/data/cryptopunks-daily-floor.csv",
+    "https://raw.githubusercontent.com/punkprice-data/cryptopunks-floor/main/data/cryptopunks-daily-floor.csv",
     parse_dates=["date"],
 )
 ```

@@ -31,7 +31,7 @@ CryptoPunks marketplace contract at the end of each UTC day, since 23 June 2017.
 reserved for one buyer are excluded. Every offer lives until the next event for that punk.
 
 Chart, CSV/JSON downloads and methodology: [punkprice.com/data](https://punkprice.com/data?utm_source=dune)
-Source + verification: [github.com/ZonnetjeAXIOM/cryptopunks-floor](https://github.com/ZonnetjeAXIOM/cryptopunks-floor)
+Source + verification: [github.com/punkprice-data/cryptopunks-floor](https://github.com/punkprice-data/cryptopunks-floor)
 ```
 
 4. Set the query to refresh daily (Query → Schedule), if your plan allows it.

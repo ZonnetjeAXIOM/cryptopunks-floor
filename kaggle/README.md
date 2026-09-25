@@ -39,3 +39,11 @@ KAGGLE_API_TOKEN=<token> py -m kaggle datasets metadata samrenkema/cryptopunks-d
 - The `id` owner must be the Kaggle username (`samrenkema`), not a display name.
 - Only the files in `kaggle/upload/` are uploaded, so this README never lands in the dataset.
 - `cryptocurrency` is not a valid Kaggle tag; the accepted ones are in the metadata file.
+
+## Starter notebook
+
+`kaggle/notebook/` is https://www.kaggle.com/code/samrenkema/cryptopunks-floor-quick-start
+(public). Update it with `kaggle kernels push -p kaggle/notebook`. The API refuses (403) to
+make a *private* notebook public, which is why the first publish was done by hand; pushing to
+an already-public notebook with `is_private: false` works. Pushing `is_private: true` would
+hide it again.
